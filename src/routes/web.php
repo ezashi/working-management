@@ -42,7 +42,7 @@ Route::get('/admin/login', [AdminLoginController::class, 'showLogin'])->name('ad
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.post');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     // 勤怠一覧画面(管理者)
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'attendance'])->name('admin.attendance');
 

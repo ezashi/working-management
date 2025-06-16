@@ -84,10 +84,10 @@ class ModificationRequestController extends Controller
 
     $modificationRequest->update([
       'status' => 'approval',
+      'approval_by' => auth()->id(),
       'approval_at' => now(),
     ]);
 
-    return redirect()->route('correction.requests.index')
-      ->with('success', '承認済み');
+    return redirect()->route('correction.requests.index');
   }
 }

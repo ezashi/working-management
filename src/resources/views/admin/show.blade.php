@@ -55,7 +55,11 @@
     </div>
 
     <div>
-      <button type="submit" @if($hasPendingRequest) disabled @endif>修正</button>
+      @if($hasPendingRequest)
+        <p>*承認待ちのため修正はできません。</p>
+      @else
+        <button type="submit">修正</button>
+      @endif
     </div>
   </form>
 </div>

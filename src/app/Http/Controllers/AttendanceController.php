@@ -35,7 +35,7 @@ class AttendanceController extends Controller
       'status' => 'working',
     ]);
 
-    return redirect()->route('attendance')->with('success', '出勤しました。');
+    return redirect()->route('attendance');
   }
 
 
@@ -47,7 +47,7 @@ class AttendanceController extends Controller
       'status' => 'finished',
     ]);
 
-    return redirect()->route('attendance')->with('success', 'お疲れ様でした。');
+    return redirect()->route('attendance');
   }
 
 
@@ -62,7 +62,7 @@ class AttendanceController extends Controller
 
     $attendance->update(['status' => 'break']);
 
-    return redirect()->route('attendance')->with('success', '休憩を開始しました。');
+    return redirect()->route('attendance');
     }
 
 
@@ -77,7 +77,7 @@ class AttendanceController extends Controller
 
     $attendance->update(['status' => 'working']);
 
-    return redirect()->route('attendance')->with('success', '休憩を終了しました。');
+    return redirect()->route('attendance');
   }
 
 
@@ -115,7 +115,7 @@ class AttendanceController extends Controller
       ->where('status', 'pending')
       ->exists();
 
-    return view('show', compact('attendance'));
+    return view('show', compact('attendance', 'hasPendingRequest'));
   }
 
 
@@ -127,8 +127,19 @@ class AttendanceController extends Controller
 
     if (!auth()->user()->isAdmin()) {
       if ($attendance->modificationRequests()->where('status', 'pending')->exists()) {
-        return redirect()->route('attendances.show', $attendance)
-          ->with('error', '*承認待ちのため修正はできません。');
+        return redirect()->route('attendances.show', $attendance);
+      }
+
+      $modifiedBreaks = [];
+      if ($request->has('breaks')) {
+        foreach ($request->breaks as $break) {
+          if (!empty($break['start_time'])) {
+            $modifiedBreaks[] = [
+              'start_time' => $break['start_time'],
+              'end_time' => $break['end_time'] ?? null
+            ];
+          }
+        }
       }
 
       $modificationRequest = ModificationRequest::create([
@@ -141,8 +152,7 @@ class AttendanceController extends Controller
         'status' => 'pending',
       ]);
 
-      return redirect()->route('attendances.show', $attendance)
-        ->with('error', '*承認待ちのため修正はできません。');
+      return redirect()->route('attendances.show', $attendance);
     }
 
     $attendance->update([
@@ -164,7 +174,6 @@ class AttendanceController extends Controller
       }
     }
 
-    return redirect()->route('attendances.show', $attendance)
-      ->with('success', '承認済み');
+    return redirect()->route('attendances.show', $attendance);
   }
 }

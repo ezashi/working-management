@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
-use App\Models\ModificationRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendanceModificationRequest;
 
@@ -81,7 +80,11 @@ class AdminAttendanceController extends Controller
   {
     $attendance->load(['user', 'breaks', 'modificationRequests']);
 
-    return view('admin.show', compact('attendance'));
+    $hasPendingRequest = $attendance->modificationRequests()
+      ->where('status', 'pending')
+      ->exists();
+
+    return view('admin.show', compact('attendance', 'hasPendingRequest'));
   }
 
   public function update(AttendanceModificationRequest $request, Attendance $attendance)
@@ -105,7 +108,6 @@ class AdminAttendanceController extends Controller
       }
     }
 
-    return redirect()->route('admin.show', $attendance)
-      ->with('success', '修正済み');
+    return redirect()->route('admin.show', $attendance);
   }
 }
