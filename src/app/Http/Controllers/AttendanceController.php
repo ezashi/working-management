@@ -105,10 +105,6 @@ class AttendanceController extends Controller
 
   public function show(Attendance $attendance)
   {
-    if ($attendance->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-      abort(403);
-    }
-
     $attendance->load('breaks');
 
     $hasPendingRequest = $attendance->modificationRequests()
@@ -121,10 +117,6 @@ class AttendanceController extends Controller
 
   public function update(AttendanceUpdateRequest $request, Attendance $attendance)
   {
-    if ($attendance->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-      abort(403);
-    }
-
     if (!auth()->user()->isAdmin()) {
       if ($attendance->modificationRequests()->where('status', 'pending')->exists()) {
         return redirect()->route('attendances.show', $attendance);

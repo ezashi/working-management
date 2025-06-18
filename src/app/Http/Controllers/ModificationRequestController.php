@@ -45,10 +45,6 @@ class ModificationRequestController extends Controller
 
   public function show(ModificationRequest $modificationRequest)
   {
-    if (!auth()->user()->isAdmin()) {
-      abort(403);
-    }
-
     $modificationRequest->load(['attendance.user', 'attendance.breaks', 'user']);
 
     return view('admin.modification_request.show', compact('modificationRequest'));
@@ -57,10 +53,6 @@ class ModificationRequestController extends Controller
 
   public function approval(Request $request, ModificationRequest $modificationRequest)
   {
-    if (!auth()->user()->isAdmin()) {
-      abort(403);
-    }
-
     $attendance = $modificationRequest->attendance;
 
     $attendance->update([
