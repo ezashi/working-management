@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\AdminAttendanceController;
 Route::get('/', function () {
     if (Auth::check()) {
         if (Auth::user()->isAdmin()) {
-            return redirect()->route('admin.attendance.daily');
+            return redirect()->route('admin.attendance');
         } else {
             return redirect()->route('attendance');
         }

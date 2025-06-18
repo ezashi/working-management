@@ -7,7 +7,7 @@
         勤務外
         @break
       @case('working')
-        勤務中
+        出勤中
         @break
       @case('break')
         休憩中
