@@ -2,20 +2,15 @@
 @section('content')
 <div>
   <span>
-    @switch($currentStatus)
-      @case('not_working')
-        勤務外
-        @break
-      @case('working')
-        出勤中
-        @break
-      @case('break')
-        休憩中
-        @break
-      @case('finished')
-        退勤済
-        @break
-    @endswitch
+    @if($currentStatus === 'not_working')
+      勤務外
+    @elseif($currentStatus === 'working')
+      出勤中
+    @elseif($currentStatus === 'break')
+      休憩中
+    @elseif($currentStatus === 'finished')
+      退勤済
+    @endif
   </span>
   <p>
     <span id="current-time">{{ $currentTime }}</span>
