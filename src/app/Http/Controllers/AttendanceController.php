@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\BreakTime;
+use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
-use App\Models\ModificationRequest;
-use App\Http\Requests\CheckInRequest;
-use App\Http\Requests\CheckOutRequest;
-use App\Http\Requests\BreakEndRequest;
-use App\Http\Requests\BreakStartRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendanceModificationRequest;
 
 class AttendanceController extends Controller
@@ -20,7 +16,7 @@ class AttendanceController extends Controller
     $user = auth()->user();
     $currentStatus = $user->currentStatus();
     $todayAttendance = $user->todayAttendance();
-    $currentTime = Carbon::now()->format('Y年m月d日 H:i:s');
+    $currentTime = Carbon::now()->isoFormat('YYYY年M月D日(ddd) HH:mm');
 
     return view('attendance', compact('currentStatus', 'todayAttendance', 'currentTime'));
   }
@@ -86,7 +82,11 @@ class AttendanceController extends Controller
   {
     $user = auth()->user();
     $month = $request->get('month', now()->format('Y-m'));
-    $date = Carbon::parse($month . '-01');
+    if ($month === now()->format('Y-m')) {
+      $date = Carbon::now()->startOfMonth();
+    } else {
+      $date = Carbon::parse($month)->startOfMonth();
+    }
 
     $attendances = $user->attendances()
     ->whereYear('date', $date->year)
@@ -117,36 +117,6 @@ class AttendanceController extends Controller
 
   public function update(AttendanceUpdateRequest $request, Attendance $attendance)
   {
-    if (!auth()->user()->isAdmin()) {
-      if ($attendance->modificationRequests()->where('status', 'pending')->exists()) {
-        return redirect()->route('attendances.show', $attendance);
-      }
-
-      $modifiedBreaks = [];
-      if ($request->has('breaks')) {
-        foreach ($request->breaks as $break) {
-          if (!empty($break['start_time'])) {
-            $modifiedBreaks[] = [
-              'start_time' => $break['start_time'],
-              'end_time' => $break['end_time'] ?? null
-            ];
-          }
-        }
-      }
-
-      $modificationRequest = ModificationRequest::create([
-        'attendance_id' => $attendance->id,
-        'user_id' => auth()->id(),
-        'check_in' => $request->check_in,
-        'check_out' => $request->check_out,
-        'breaks' => $this->processBreaks($request->breaks),
-        'note' => $request->note,
-        'status' => 'pending',
-      ]);
-
-      return redirect()->route('attendances.show', $attendance);
-    }
-
     $attendance->update([
       'check_in' => $request->check_in,
       'check_out' => $request->check_out,
@@ -166,6 +136,6 @@ class AttendanceController extends Controller
       }
     }
 
-    return redirect()->route('attendances.show', $attendance);
+    return redirect()->route('admin.show', $attendance);
   }
 }
