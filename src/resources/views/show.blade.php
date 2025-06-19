@@ -5,7 +5,7 @@
   @if($hasPendingRequest)
     <div>*承認待ちのため修正はできません。</div>
   @endif
-  <form action="{{ route('attendances.update', $attendance }}" method="post">
+  <form action="{{ route('attendance.update', $attendance) }}" method="post">
     @csrf
     @method('put')
     <div>

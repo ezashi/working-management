@@ -29,6 +29,10 @@ Route::middleware(['auth'])->group(function () {
     // 勤怠一覧画面
     Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
 
+    // 勤怠詳細画面(管理者)※先に定義
+    Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])->name('admin.show');
+    Route::put('/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('admin.update');
+
     // 勤怠詳細画面
     Route::get('/attendance/{id}', [AttendanceController::class, 'show'])->name('attendance.show')->middleware('redirect.if.admin');
     Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');

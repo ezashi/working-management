@@ -109,6 +109,11 @@ class AttendanceController extends Controller
 
   public function show(Attendance $attendance)
   {
+    if (auth()->user()->isAdmin()) {
+      $adminController = new AdminAttendanceController();
+      return $adminController->show($attendance);
+    }
+
     $attendance->load('breaks');
 
     $hasPendingRequest = $attendance->modificationRequests()
@@ -119,8 +124,13 @@ class AttendanceController extends Controller
   }
 
 
-  public function update(AttendanceUpdateRequest $request, Attendance $attendance)
+  public function update(AttendanceModificationRequest $request, Attendance $attendance)
   {
+    if (auth()->user()->isAdmin()) {
+      $adminController = new AdminAttendanceController();
+      return $adminController->update($request, $attendance);
+    }
+
     $attendance->update([
       'check_in' => $request->check_in,
       'check_out' => $request->check_out,
