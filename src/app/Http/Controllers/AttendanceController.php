@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\BreakTime;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\ModificationRequest;
+use App\Http\Requests\CheckInRequest;
+use App\Http\Requests\CheckOutRequest;
+use App\Http\Requests\BreakEndRequest;
+use App\Http\Requests\BreakStartRequest;
 use App\Http\Requests\AttendanceModificationRequest;
 
 class AttendanceController extends Controller
