@@ -16,9 +16,16 @@ class RedirectIfAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && auth()->user()->isAdmin()) {
-            $attendance = $request->route('attendance');
-            if ($attendance) {
-                return redirect()->route('admin.show', $attendance);
+            $id = $request->route('id');
+            if ($id) {
+                // 管理者用コントローラーを直接呼び出し
+                $adminController = app(\App\Http\Controllers\AdminAttendanceController::class);
+
+                if ($request->isMethod('GET')) {
+                    return $adminController->show($id);
+                } elseif ($request->isMethod('PUT') || $request->isMethod('PATCH')) {
+                    return $adminController->update($request, $id);
+                }
             }
             return redirect()->route('admin.attendance');
         }
