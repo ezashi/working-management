@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div>
-  <h2>{{ $targetDate->format('Y年m月d日') }}の勤怠</h2>
+  <h2>{{ $targetDate->format('Y年n月j日') }}の勤怠</h2>
   <div>
     <a href="{{ route('admin.attendance', ['date' => $prevDate]) }}">←前日</a>
     <span>{{ $targetDate->format('Y/m/d') }}</span>
@@ -28,7 +28,7 @@
             <td>{{ $attendance->totalBreakTime() ? gmdate('H:i', $attendance->totalBreakTime() * 60) : '-' }}</td>
             <td>{{ $attendance->workingHours() ? gmdate('H:i', floor($attendance->workingHours()) * 60) : '-' }}</td>
             <td>
-              <a href="{{ route('admin.show', $attendance) }}">詳細</a>
+              <a href="{{ route('admin.show', $attendance->id) }}">詳細</a>
             </td>
           </tr>
         @endforeach

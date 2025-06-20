@@ -21,7 +21,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($correctionRequests as $request)
+          @foreach($pendingRequests as $request)
           <tr>
             <td>
               <span>承認待ち</span>
@@ -31,7 +31,7 @@
             <td>{{ $request->note }}</td>
             <td>{{ $request->created_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('attendance.show', $request->attendance) }}">詳細</a>
+              <a href="{{ route('attendance.show', $request->attendance->id) }}">詳細</a>
             </td>
           </tr>
           @endforeach
@@ -66,7 +66,7 @@
             <td>{{ $request->note }}</td>
             <td>{{ $request->approval_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('attendance.show', $request->attendance) }}">詳細</a>
+              <a href="{{ route('attendance.show', $request->attendance->id) }}">詳細</a>
             </td>
           </tr>
           @endforeach

@@ -107,13 +107,13 @@ class AttendanceController extends Controller
 
 
 
-  public function show(Attendance $attendance)
+  public function show($id)
   {
     if (auth()->user()->isAdmin()) {
-      return redirect()->route('admin.show', $attendance);
+      return redirect()->route('admin.show', $id);
     }
 
-    $attendance->load('breaks');
+    $attendance = Attendance::with('breaks')->findOrFail($id);
 
     $hasPendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
@@ -123,14 +123,16 @@ class AttendanceController extends Controller
   }
 
 
-  public function update(AttendanceModificationRequest $request, Attendance $attendance)
+  public function update(AttendanceModificationRequest $request, $id)
   {
+    $attendance = Attendance::findOrFail($id);
+
     $hasPendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
       ->exists();
 
     if ($hasPendingRequest) {
-      return redirect()->route('attendance.show', $attendance);
+      return redirect()->route('attendance.show', $attendance->id);
     }
 
     ModificationRequest::create([
@@ -144,6 +146,6 @@ class AttendanceController extends Controller
       'status' => 'pending',
     ]);
 
-    return redirect()->route('attendance.show', $attendance);
+    return redirect()->route('attendance.show', $attendance->id);
   }
 }

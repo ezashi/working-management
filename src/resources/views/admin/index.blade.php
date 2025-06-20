@@ -21,7 +21,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($correctionRequests as $request)
+          @foreach($pendingRequests as $request)
           <tr>
             <td>
               <span>承認待ち</span>

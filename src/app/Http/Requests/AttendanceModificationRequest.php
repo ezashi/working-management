@@ -23,10 +23,10 @@ class AttendanceModificationRequest extends FormRequest
     {
         return [
             'check_in' => ['nullable', 'date_format:H:i', 'before:check_out'],
-            'check_out' => ['nullable', 'date_format:H:i', 'after:check_in'],
+            'check_out' => ['nullable', 'date_format:H:i'],
             'breaks' => ['nullable', 'array'],
             'breaks.*.start_time' => ['required_with:breaks', 'date_format:H:i', 'before:breaks.*.end_time'],
-            'breaks.*.end_time' => ['nullable', 'date_format:H:i', 'after:breaks.*.start_time'],
+            'breaks.*.end_time' => ['nullable', 'date_format:H:i'],
             'note' => ['required', 'string', 'max:1000'],
         ];
     }
@@ -35,9 +35,7 @@ class AttendanceModificationRequest extends FormRequest
     {
         return [
             'check_in.before' => '出勤時間もしくは退勤時間が不適切な値です。',
-            'check_out.after' => '出勤時間もしくは退勤時間が不適切な値です。',
             'breaks.*.start_time.before' => '休憩時間が勤務時間外です。',
-            'breaks.*.end_time.after' => '休憩時間が勤務時間外です。',
             'note.required' => '備考を記入してください',
         ];
     }
