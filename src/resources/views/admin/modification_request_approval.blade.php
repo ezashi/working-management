@@ -8,20 +8,20 @@
       <h3>申請情報</h3>
       <div>
         <h3>名前</h3>
-        <p>{{ $attendance->user->name }}</p>
+        <p>{{ $modificationRequest->user->name }}</p>
       </div>
       <div>
         <h3>日付</h3>
-        <p>{{ $attendance->date->format('Y年   m月d日') }}</p>
+        <p>{{ $modificationRequest->attendance->date->format('Y年   m月d日') }}</p>
       </div>
       <div>
         <h3>出勤・退勤</h3>
-        <p>{{ $modificationRequest->modified_check_out ?? '-' }} ~ {{ $modificationRequest->attendance->check_out ?? '-' }}</p>
+        <p>{{ $modificationRequest->modified_check_in ?? '-' }} ~ {{ $modificationRequest->attendance->check_out ?? '-' }}</p>
       </div>
       <div>
         <h3>休憩</h3>
         <p>
-          @if($modificationRequest->modified_breaks)
+        @if($modificationRequest->modified_breaks)
             @foreach($modificationRequest->modified_breaks as $index => $break)
               休憩{{ $index + 1 }}: {{ $break['start_time'] }} ~ {{ $break['end_time'] ?? '未終了' }}<br>
             @endforeach
