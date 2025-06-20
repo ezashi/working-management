@@ -43,22 +43,23 @@ class ModificationRequestController extends Controller
   }
 
 
-  public function show(ModificationRequest $modificationRequest)
+  public function show($attendance_correct_request)
   {
-    $modificationRequest->load(['attendance.user', 'attendance.breaks', 'user']);
+    $modificationRequest = ModificationRequest::with(['attendance.user', 'attendance.breaks', 'user'])->findOrFail($attendance_correct_request);
 
     return view('admin.modification_request_approval', compact('modificationRequest'));
   }
 
 
-  public function approval(Request $request, ModificationRequest $modificationRequest)
+  public function approval(Request $request, $attendance_correct_request)
   {
+    $modificationRequest = ModificationRequest::findOrFail($attendance_correct_request);
     $attendance = $modificationRequest->attendance;
 
     $attendance->update([
-      'check_in' => $modificationRequest->check_in,
-      'check_out' => $modificationRequest->check_out,
-      'note' => $modificationRequest->note,
+      'check_in' => $modificationRequest->modified_check_in,
+      'check_out' => $modificationRequest->modified_check_out,
+      'note' => $modificationRequest->modified_note,
     ]);
 
     if ($modificationRequest->modified_breaks) {
@@ -80,6 +81,6 @@ class ModificationRequestController extends Controller
       'approval_at' => now(),
     ]);
 
-    return redirect()->route('correction.requests.index');
+    return redirect()->route('correction.request.index');
   }
 }

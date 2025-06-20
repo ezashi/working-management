@@ -31,7 +31,7 @@
             <td>{{ $request->note }}</td>
             <td>{{ $request->created_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('modification.request.show', $request) }}">詳細</a>
+              <a href="{{ route('modification.request.show', ['attendance_correct_request' => $request->id]) }}">詳細</a>
             </td>
           </tr>
           @endforeach
@@ -66,7 +66,7 @@
             <td>{{ $request->note }}</td>
             <td>{{ $request->approval_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('admin.show', $request) }}">詳細</a>
+              <a href="{{ route('admin.show', $request->id) }}">詳細</a>
             </td>
           </tr>
           @endforeach

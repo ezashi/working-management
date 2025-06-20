@@ -2,7 +2,7 @@
 @section('content')
 <div>
   <h2>勤怠詳細</h2>
-  <form action="{{ route('modification.request.approval', $modificationRequest) }}" method="POST">
+  <form action="{{ route('modification.request.approval', ['attendance_correct_request' => $modificationRequest->id]) }}" method="POST">
     @csrf
     <div>
       <h3>申請情報</h3>
