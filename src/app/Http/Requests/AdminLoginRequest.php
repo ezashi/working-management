@@ -29,16 +29,19 @@ class AdminLoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'メールアドレスを入力してください',
+            'password.required' => 'パスワードを入力してください',
+        ];
+    }
+
     public function authenticate(): void
     {
         if (!Auth::attempt($this->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'ログイン情報が登録されていません。',
             ]);
         }
 
