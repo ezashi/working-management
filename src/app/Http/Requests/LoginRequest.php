@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,26 +27,20 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    public function authenticate(): void
+    {
+        if (!Auth::attempt($this->only('email', 'password'))) {
+            throw ValidationException::withMessages([
+                'email' => 'ログイン情報が正しくありません。',
+            ]);
+        }
+    }
+
     public function messages(): array
     {
         return [
             'email.required' => 'メールアドレスを入力してください',
             'password.required' => 'パスワードを入力してください',
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            // バリデーションエラーがない場合のみ認証処理を実行
-            if (!$validator->errors()->any()) {
-                if (!Auth::attempt($this->only('email', 'password'))) {
-                    // 認証失敗時のエラーメッセージを追加
-                    throw ValidationException::withMessages([
-                        'email' => ['ログイン情報が登録されていません。'],
-                    ]);
-                }
-            }
-        });
     }
 }
