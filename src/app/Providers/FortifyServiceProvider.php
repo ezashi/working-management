@@ -5,6 +5,7 @@ namespace App\Providers;
 use Laravel\Fortify\Fortify;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
 use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Support\ServiceProvider;
@@ -13,6 +14,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 
@@ -60,14 +62,17 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::authenticateUsing(function (Request $request) {
-            $loginRequest = new LoginRequest();
-            $loginRequest->merge($request->all());
-            $loginRequest->setContainer(app());
-            $loginRequest->setRedirector(app('redirect'));
+            $loginRequestInstance = new LoginRequest();
+            $rules = $loginRequestInstance->rules();
+            $messages = $loginRequestInstance->messages();
 
-            $validated = $loginRequest->validated();
+            $validated = $request->validate($rules, $messages);
 
-            $loginRequest->authenticate();
+            if (!Auth::attempt($request->only('email', 'password'))) {
+                throw ValidationException::withMessages([
+                    'email' => 'ログイン情報が登録されていません。',
+                ]);
+            }
 
             return auth()->user();
         });
