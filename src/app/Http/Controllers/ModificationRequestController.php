@@ -24,7 +24,7 @@ class ModificationRequestController extends Controller
         ->orderBy('approval_at', 'desc')
         ->get();
 
-      return view('admin.modification_request.list', compact('pendingRequests', 'approvalRequests'));
+      return view('correction_request_list', compact('pendingRequests', 'approvalRequests'));
     } else{
       $pendingRequests = $user->modificationRequests()
         ->with('attendance')
@@ -38,7 +38,7 @@ class ModificationRequestController extends Controller
         ->orderBy('approval_at', 'desc')
         ->get();
 
-      return view('stamp_correction_request.list', compact('pendingRequests', 'approvalRequests'));
+      return view('correction_request_list', compact('pendingRequests', 'approvalRequests'));
     }
   }
 
@@ -47,7 +47,7 @@ class ModificationRequestController extends Controller
   {
     $modificationRequest->load(['attendance.user', 'attendance.breaks', 'user']);
 
-    return view('admin.modification_request.show', compact('modificationRequest'));
+    return view('admin.modification_request_approval', compact('modificationRequest'));
   }
 
 

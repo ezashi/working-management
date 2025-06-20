@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'auth.any' => \App\Http\Middleware\AuthAnyMiddleware::class,
             'redirect.if.admin' => \App\Http\Middleware\RedirectIfAdmin::class,
-            'block.if.admin' => \App\Http\Middleware\BlockIfAdmin::class,
         ]);
 
         $middleware->group('web', [

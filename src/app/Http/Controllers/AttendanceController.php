@@ -110,8 +110,7 @@ class AttendanceController extends Controller
   public function show(Attendance $attendance)
   {
     if (auth()->user()->isAdmin()) {
-      $adminController = new AdminAttendanceController();
-      return $adminController->show($attendance);
+      return redirect()->route('admin.show', $attendance);
     }
 
     $attendance->load('breaks');
@@ -126,30 +125,25 @@ class AttendanceController extends Controller
 
   public function update(AttendanceModificationRequest $request, Attendance $attendance)
   {
-    if (auth()->user()->isAdmin()) {
-      $adminController = new AdminAttendanceController();
-      return $adminController->update($request, $attendance);
+    $hasPendingRequest = $attendance->modificationRequests()
+      ->where('status', 'pending')
+      ->exists();
+
+    if ($hasPendingRequest) {
+      return redirect()->route('attendance.show', $attendance);
     }
 
-    $attendance->update([
-      'check_in' => $request->check_in,
-      'check_out' => $request->check_out,
-      'note' => $request->note,
+    ModificationRequest::create([
+      'attendance_id' => $attendance->id,
+      'user_id' => auth()->id(),
+      'modified_check_in' => $request->check_in,
+      'modified_check_out' => $request->check_out,
+      'modified_breaks' => $request->breaks ? array_values($request->breaks) : null,
+      'modified_note' => $request->note,
+      'reason' => $request->note ?? '修正申請',
+      'status' => 'pending',
     ]);
 
-    if ($request->has('breaks')) {
-      $attendance->breaks()->delete();
-
-      foreach ($request->breaks as $break) {
-        if (!empty($break['start_time'])) {
-          $attendance->breaks()->create([
-            'start_time' => $break['start_time'],
-            'end_time' => $break['end_time'] ?? null,
-          ]);
-        }
-      }
-    }
-
-    return redirect()->route('admin.show', $attendance);
+    return redirect()->route('attendance.show', $attendance);
   }
 }

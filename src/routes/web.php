@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     // 勤怠詳細画面
     Route::get('/attendance/{id}', [AttendanceController::class, 'show'])->name('attendance.show')->middleware('redirect.if.admin');
-    Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update')->middleware('redirect.if.admin');
 
     // 申請画面
     Route::get('/stamp_correction_request/list', [ModificationRequestController::class, 'index'])->name('correction.request.index');

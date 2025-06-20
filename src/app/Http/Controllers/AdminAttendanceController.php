@@ -30,19 +30,19 @@ class AdminAttendanceController extends Controller
 
   public function staff()
   {
-    $staffs = User::where('role', 'user');
+    $staffs = User::where('role', 'user')->get();
 
     return view('admin.staff', compact('staffs'));
   }
 
   public function list(Request $request, User $user)
   {
-    if ($user->isAdmin()) {
-      abort(404);
-    }
-
     $month = $request->get('month', now()->format('Y-m'));
-    $date = Carbon::parse($month . '-01');
+    if ($month === now()->format('Y-m')) {
+      $date = Carbon::now()->startOfMonth();
+    } else {
+      $date = Carbon::parse($month)->startOfMonth();
+    }
 
     $attendances = $user->attendances()
       ->whereYear('date', $date->year)

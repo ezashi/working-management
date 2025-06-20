@@ -16,7 +16,11 @@ class RedirectIfAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && auth()->user()->isAdmin()) {
-            return redirect()->route('admin.show', $request->route('attendance'));
+            $attendance = $request->route('attendance');
+            if ($attendance) {
+                return redirect()->route('admin.show', $attendance);
+            }
+            return redirect()->route('admin.attendance');
         }
 
         return $next($request);

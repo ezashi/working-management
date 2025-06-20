@@ -1,9 +1,10 @@
 $user = auth()->user();
-if ($user->isAdmin()) {
+@if ($user->isAdmin()) {
   @extends('layouts.admin')
 } else {
   @extends('layouts.app')
 }
+@endif
 @section('content')
 <div>
   <h2>申請一覧</h2>
@@ -36,10 +37,12 @@ if ($user->isAdmin()) {
             <td>{{ $request->note }}</td>
             <td>{{ $request->created_at->format('Y/m/d') }}</td>
             <td>
-              if ($user->isAdmin()) {
+              @if ($user->isAdmin()) {
                 <a href="{{ route('modification.request.show', $request) }}">詳細</a>
+              }else{
+                <a href="{{ route('attendance.show', $request->attendance) }}">詳細</a>
               }
-              <a href="{{ route('attendance.show', $request->attendance) }}">詳細</a>
+              @endif
             </td>
           </tr>
           @endforeach
@@ -74,7 +77,12 @@ if ($user->isAdmin()) {
             <td>{{ $request->note }}</td>
             <td>{{ $request->approval_at->format('Y/m/d') }}</td>
             <td>
+            @if ($user->isAdmin()) {
+              <a href="{{ route('admin.show', $request) }}">詳細</a>
+            }else{
               <a href="{{ route('attendance.show', $request->attendance) }}">詳細</a>
+            }
+            @endif
             </td>
           </tr>
           @endforeach
