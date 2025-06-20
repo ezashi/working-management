@@ -35,8 +35,10 @@ class AdminAttendanceController extends Controller
     return view('admin.staff', compact('staffs'));
   }
 
-  public function list(Request $request, User $user)
+  public function list(Request $request, $id)
   {
+    $user = User::findOrFail($id);
+
     $month = $request->get('month', now()->format('Y-m'));
     if ($month === now()->format('Y-m')) {
       $date = Carbon::now()->startOfMonth();

@@ -3,9 +3,9 @@
 <div>
   <h2>{{ $user->name }}さんの勤怠一覧</h2>
   <div>
-    <a href="{{ route('admin.list', ['user' => $user, 'month' => $prevMonth]) }}">←前月</a>
+    <a href="{{ route('admin.list', ['id' => $user->id, 'month' => $prevMonth]) }}">←前月</a>
     <span>{{ $date->format('Y/m') }}</span>
-    <a href="{{ route('admin.list', ['user' => $user, 'month' => $nextMonth]) }}">翌月→</a>
+    <a href="{{ route('admin.list', ['id' => $user->id, 'month' => $nextMonth]) }}">翌月→</a>
   </div>
   <div>
     <table>
