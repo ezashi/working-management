@@ -112,6 +112,6 @@ class AdminAttendanceController extends Controller
       }
     }
 
-    return redirect()->route('admin.show', $attendance->id);
+    return redirect()->route('attendance.show', $attendance->id);
   }
 }

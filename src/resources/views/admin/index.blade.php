@@ -66,7 +66,7 @@
             <td>{{ $request->note }}</td>
             <td>{{ $request->approval_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('admin.show', $request->id) }}">詳細</a>
+              <a href="{{ route('attendance.show', $request->id) }}">詳細</a>
             </td>
           </tr>
           @endforeach

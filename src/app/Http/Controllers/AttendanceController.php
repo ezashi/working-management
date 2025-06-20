@@ -110,7 +110,7 @@ class AttendanceController extends Controller
   public function show($id)
   {
     if (auth()->user()->isAdmin()) {
-      return redirect()->route('admin.show', $id);
+      return redirect()->route('attendance.show', $id);
     }
 
     $attendance = Attendance::with('breaks')->findOrFail($id);

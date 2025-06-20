@@ -28,7 +28,7 @@
             <td>{{ $attendance->totalBreakTime() ? gmdate('H:i', $attendance->totalBreakTime() * 60) : '-' }}</td>
             <td>{{ $attendance->workingHours() ? gmdate('H:i', floor($attendance->workingHours()) * 60) : '-' }}</td>
             <td>
-              <a href="{{ route('admin.show', $attendance->id) }}">詳細</a>
+              <a href="{{ route('attendance.show', $attendance->id) }}">詳細</a>
             </td>
           </tr>
         @endforeach
