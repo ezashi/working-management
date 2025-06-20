@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->time('modified_check_in')->nullable();
-            $table->time('modified_check_out')->nullable();
-            $table->json('modified_breaks')->nullable();
-            $table->text('modified_note')->nullable();
+            $table->time('check_in')->nullable();
+            $table->time('check_out')->nullable();
+            $table->json('breaks')->nullable();
+            $table->text('note')->nullable();
             $table->enum('status', ['pending', 'approval', 'rejected'])->default('pending');
             $table->foreignId('approval_by')->nullable()->constrained('users');
             $table->timestamp('approval_at')->nullable();
