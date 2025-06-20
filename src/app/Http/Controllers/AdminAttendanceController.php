@@ -76,9 +76,9 @@ class AdminAttendanceController extends Controller
     ));
   }
 
-  public function show(Attendance $attendance)
+  public function show($id)
   {
-    $attendance->load(['user', 'breaks', 'modificationRequests']);
+    $attendance = Attendance::with(['user', 'breaks', 'modificationRequests'])->findOrFail($id);
 
     $hasPendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
@@ -87,8 +87,10 @@ class AdminAttendanceController extends Controller
     return view('admin.show', compact('attendance', 'hasPendingRequest'));
   }
 
-  public function update(AttendanceModificationRequest $request, Attendance $attendance)
+  public function update(AttendanceModificationRequest $request, $id)
   {
+    $attendance = Attendance::findOrFail($id);
+
     $attendance->update([
       'check_in' => $request->check_in,
       'check_out' => $request->check_out,
@@ -108,6 +110,6 @@ class AdminAttendanceController extends Controller
       }
     }
 
-    return redirect()->route('admin.show', $attendance);
+    return redirect()->route('admin.show', $attendance->id);
   }
 }
