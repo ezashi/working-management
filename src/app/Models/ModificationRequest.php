@@ -18,18 +18,18 @@ class ModificationRequest extends Model
     protected $fillable = [
         'attendance_id',
         'user_id',
-        'check_in',
-        'check_out',
-        'breaks',
-        'note',
+        'modified_check_in',
+        'modified_check_out',
+        'modified_breaks',
+        'modified_note',
         'status',
-        'approval_by',
-        'approval_at',
+        'modified_approval_by',
+        'modified_approval_at',
     ];
 
     protected $casts = [
-        'breaks' => 'array',
-        'approval_at' => 'datetime',
+        'modified_breaks' => 'array',
+        'modified_approval_at' => 'datetime',
     ];
 
 
@@ -48,6 +48,6 @@ class ModificationRequest extends Model
 
     public function approval()
     {
-        return $this->belongsTo(User::class, 'approval_by');
+        return $this->belongsTo(User::class, 'modified_approval_by');
     }
 }

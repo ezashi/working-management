@@ -57,9 +57,13 @@ class Attendance extends Model
                 $start = strtotime($break->start_time);
                 $end = strtotime($break->end_time);
                 $totalMinutes += ($end - $start) / 60;
+            } elseif ($this->status === 'break') {
+                $start = strtotime($break->start_time);
+                $now = strtotime(now()->format('H:i:s'));
+                $totalMinutes += ($now - $start) / 60;
             }
         }
-        return $totalMinutes;
+        return max(0, $totalMinutes);
     }
 
     public function workingHours()

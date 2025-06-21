@@ -96,7 +96,7 @@ class AttendanceController extends Controller
     ->whereYear('date', $date->year)
     ->whereMonth('date', $date->month)
     ->orderBy('date', 'desc')
-    ->with('breaks')
+    ->with('breaks', 'user')
     ->get();
 
     $prevMonth = $date->copy()->subMonth()->format('Y-m');
@@ -142,7 +142,6 @@ class AttendanceController extends Controller
       'modified_check_out' => $request->check_out,
       'modified_breaks' => $request->breaks ? array_values($request->breaks) : null,
       'modified_note' => $request->note,
-      'reason' => $request->note ?? '修正申請',
       'status' => 'pending',
     ]);
 
