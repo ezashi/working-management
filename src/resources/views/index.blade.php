@@ -26,9 +26,9 @@
             <td>
               <span>承認待ち</span>
             </td>
-            <td>{{ $request->user->name }}</td>
+            <td>{{ auth()->user()->name }}</td>
             <td>{{ $request->attendance->date->format('Y/m/d') }}</td>
-            <td>{{ $request->note }}</td>
+            <td>{{ $request->modified_note }}</td>
             <td>{{ $request->created_at->format('Y/m/d') }}</td>
             <td>
               <a href="{{ route('attendance.show', $request->attendance->id) }}">詳細</a>
@@ -61,10 +61,10 @@
             <td>
               <span>承認済み</span>
             </td>
-            <td>{{ $request->user->name }}</td>
+            <td>{{ auth()->user()->name }}</td>
             <td>{{ $request->attendance->date->format('Y/m/d') }}</td>
-            <td>{{ $request->note }}</td>
-            <td>{{ $request->approval_at->format('Y/m/d') }}</td>
+            <td>{{ $request->modified_note }}</td>
+            <td>{{ $request->modified_approval_at->format('Y/m/d') }}</td>
             <td>
               <a href="{{ route('attendance.show', $request->attendance->id) }}">詳細</a>
             </td>

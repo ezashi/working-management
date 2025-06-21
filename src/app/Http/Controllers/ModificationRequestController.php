@@ -21,7 +21,7 @@ class ModificationRequestController extends Controller
 
       $approvalRequests = ModificationRequest::with(['attendance.user', 'user', 'approval'])
         ->where('status', 'approval')
-        ->orderBy('approval_at', 'desc')
+        ->orderBy('modified_approval_at', 'desc')
         ->get();
 
       return view('admin.index', compact('pendingRequests', 'approvalRequests'));
@@ -35,7 +35,7 @@ class ModificationRequestController extends Controller
       $approvalRequests = $user->modificationRequests()
         ->with('attendance')
         ->where('status', 'approval')
-        ->orderBy('approval_at', 'desc')
+        ->orderBy('modified_approval_at', 'desc')
         ->get();
 
       return view('index', compact('pendingRequests', 'approvalRequests'));
@@ -77,8 +77,8 @@ class ModificationRequestController extends Controller
 
     $modificationRequest->update([
       'status' => 'approval',
-      'approval_by' => auth()->id(),
-      'approval_at' => now(),
+      'modified_approval_by' => auth()->id(),
+      'modified_approval_at' => now(),
     ]);
 
     return redirect()->route('correction.request.index');
