@@ -45,17 +45,21 @@
         </div>
 
         <div>
-          $newIndex = count($attendance->breaks);
-          <p>休憩{{ $newIndex + 1 }}</p>
-          <input type="time" name="breaks[{{ $newIndex }}][start_time]" value="{{ old('breaks.'.$newIndex.'.start_time', $break->start_time ? substr($break->start_time, 0, 5) : '') }}">
-          ~
-          <input type="time" name="breaks[{{ $newIndex }}][end_time]" value="{{ old('breaks.'.$newIndex.'.end_time', $break->end_time ? substr($break->end_time, 0, 5) : '') }}">
-          @error('breaks.'.$newIndex.'.start_time')
-            <div class="error-message">{{ $message }}</div>
-          @enderror
-          @error('breaks.'.$newIndex.'.end_time')
-            <div class="error-message">{{ $message }}</div>
-          @enderror
+          @php
+            $newIndex = count($attendance->breaks);
+          @endphp
+          <div>
+            <p>休憩{{ $newIndex + 1 }}</p>
+            <input type="time" name="breaks[{{ $newIndex }}][start_time]" value="{{ old('breaks.'.$newIndex.'.start_time', '') }}">
+            ~
+            <input type="time" name="breaks[{{ $newIndex }}][end_time]" value="{{ old('breaks.'.$newIndex.'.end_time', '') }}">
+            @error('breaks.'.$newIndex.'.start_time')
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+            @error('breaks.'.$newIndex.'.end_time')
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+          </div>
         </div>
       </div>
 
