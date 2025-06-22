@@ -35,7 +35,7 @@
         <p>{{ $modificationRequest->modified_note ?? '-' }}</p>
       </div>
     </div>
-    @if($hasPendingRequest)
+    @if($modificationRequest->status === 'approval' || session('approved'))
       <p>承認済み</p>
     @else
       <button type="submit">承認</button>

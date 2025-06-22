@@ -81,6 +81,6 @@ class ModificationRequestController extends Controller
       'modified_approval_at' => now(),
     ]);
 
-    return redirect()->route('modification.request.show');
+    return redirect()->route('modification.request.show', $attendance_correct_request);
   }
 }
