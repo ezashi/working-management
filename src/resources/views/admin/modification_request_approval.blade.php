@@ -35,7 +35,11 @@
         <p>{{ $modificationRequest->modified_note ?? '-' }}</p>
       </div>
     </div>
-    <button type="submit">承認</button>
+    @if($hasPendingRequest)
+      <p>承認済み</p>
+    @else
+      <button type="submit">承認</button>
+    @endif
   </form>
 </div>
 @endsection

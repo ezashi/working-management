@@ -81,6 +81,6 @@ class ModificationRequestController extends Controller
       'modified_approval_at' => now(),
     ]);
 
-    return redirect()->route('correction.request.index');
+    return redirect()->route('modification.request.show');
   }
 }
