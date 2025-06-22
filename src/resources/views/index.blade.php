@@ -5,7 +5,7 @@
 </div>
 <div>
   <div>
-    <h3>申請待ち</h3>
+    <h3>承認待ち</h3>
     @if($pendingRequests->isEmpty())
       <p>承認待ちの申請はありません。</p>
     @else
