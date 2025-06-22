@@ -115,11 +115,13 @@ class AttendanceController extends Controller
 
     $attendance = Attendance::with('breaks')->findOrFail($id);
 
-    $hasPendingRequest = $attendance->modificationRequests()
+    $pendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
-      ->exists();
+      ->first();
 
-    return view('show', compact('attendance', 'hasPendingRequest'));
+    $hasPendingRequest = $pendingRequest !== null;
+
+    return view('show', compact('attendance', 'hasPendingRequest', 'pendingRequest'));
   }
 
 

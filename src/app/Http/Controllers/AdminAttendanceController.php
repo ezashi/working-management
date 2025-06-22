@@ -82,11 +82,13 @@ class AdminAttendanceController extends Controller
   {
     $attendance = Attendance::with(['user', 'breaks', 'modificationRequests'])->findOrFail($id);
 
-    $hasPendingRequest = $attendance->modificationRequests()
+    $pendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
-      ->exists();
+      ->first();
 
-    return view('admin.show', compact('attendance', 'hasPendingRequest'));
+    $hasPendingRequest = $pendingRequest !== null;
+
+    return view('admin.show', compact('attendance', 'hasPendingRequest', 'pendingRequest'));
   }
 
   public function update(AttendanceModificationRequest $request, $id)
