@@ -25,7 +25,7 @@ class AttendanceModificationRequest extends FormRequest
             'check_in' => ['nullable', 'date_format:H:i'],
             'check_out' => ['nullable', 'date_format:H:i', 'after:check_in'],
             'breaks' => ['nullable', 'array'],
-            'breaks.*.start_time' => ['required_with:breaks', 'date_format:H:i'],
+            'breaks.*.start_time' => ['nullable', 'date_format:H:i'],
             'breaks.*.end_time' => ['nullable', 'date_format:H:i', 'after:breaks.*.start_time'],
             'note' => ['required', 'string', 'max:1000'],
         ];
