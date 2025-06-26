@@ -26,13 +26,21 @@ class StaffSeeder extends Seeder
 
             $attendanceCount = rand(15, 25);
             $attendances = collect();
+            $usedDates = [];
 
             for ($i = 0; $i < $attendanceCount; $i++) {
-                $date = Carbon::now()->subDays(rand(1, 30));
+                $attempts = 0;
+                do {
+                    $date = Carbon::now()->subDays(rand(1, 30));
+                    $dateString = $date->format('Y-m-d');
+                    $attempts++;
+                } while (in_array($dateString, $usedDates) && $attempts < 50);
 
-                if ($attendances->where('date', $date->format('Y-m-d'))->isNotEmpty()) {
+                if ($attempts >= 50) {
                     continue;
                 }
+
+                $usedDates[] = $dateString;
 
                 $checkInHour = rand(8, 10);
                 $checkInMinute = rand(0, 59);
@@ -44,7 +52,7 @@ class StaffSeeder extends Seeder
 
                 $attendance = Attendance::create([
                     'user_id' => $user->id,
-                    'date' => $date->format('Y-m-d'),
+                    'date' => $dateString,
                     'check_in' => $checkIn->format('H:i:s'),
                     'check_out' => $checkOut->format('H:i:s'),
                     'status' => 'finished',
@@ -54,8 +62,8 @@ class StaffSeeder extends Seeder
                 $attendances->push($attendance);
 
                 if (rand(1, 10) <= 8) {
-                $this->createBreakTimes($attendance, $checkIn, $checkOut);
-            }
+                    $this->createBreakTimes($attendance, $checkIn, $checkOut);
+                }
             }
 
             $this->createTodayAttendance($user, $index);
@@ -75,10 +83,10 @@ class StaffSeeder extends Seeder
             $lunchStart = Carbon::createFromTime(12, rand(0, 30));
             $lunchEnd = $lunchStart->copy()->addMinutes(rand(45, 75));
 
-        $breaks[] = [
-            'start_time' => $lunchStart->format('H:i:s'),
-            'end_time' => $lunchEnd->format('H:i:s'),
-        ];
+            $breaks[] = [
+                'start_time' => $lunchStart->format('H:i:s'),
+                'end_time' => $lunchEnd->format('H:i:s'),
+            ];
         }
 
         if (rand(1, 10) <= 4) {
@@ -116,6 +124,11 @@ class StaffSeeder extends Seeder
     private function createTodayAttendance($user, $index)
     {
         $today = Carbon::today();
+        $todayString = $today->format('Y-m-d');
+
+        if (Attendance::where('user_id', $user->id)->where('date', $todayString)->exists()) {
+            return;
+        }
 
         $statusType = $index % 5;
 
@@ -124,7 +137,7 @@ class StaffSeeder extends Seeder
                 $checkIn = $today->copy()->setTime(rand(8, 10), rand(0, 59));
                 $attendance = Attendance::create([
                     'user_id' => $user->id,
-                    'date' => $today->format('Y-m-d'),
+                    'date' => $todayString,
                     'check_in' => $checkIn->format('H:i:s'),
                     'check_out' => null,
                     'status' => 'working',
@@ -135,7 +148,7 @@ class StaffSeeder extends Seeder
                 $checkIn = $today->copy()->setTime(rand(8, 10), rand(0, 59));
                 $attendance = Attendance::create([
                     'user_id' => $user->id,
-                    'date' => $today->format('Y-m-d'),
+                    'date' => $todayString,
                     'check_in' => $checkIn->format('H:i:s'),
                     'check_out' => null,
                     'status' => 'break',
@@ -153,7 +166,7 @@ class StaffSeeder extends Seeder
                 $checkOut = $checkIn->copy()->addHours(rand(7, 9))->addMinutes(rand(0, 59));
                 $attendance = Attendance::create([
                     'user_id' => $user->id,
-                    'date' => $today->format('Y-m-d'),
+                    'date' => $todayString,
                     'check_in' => $checkIn->format('H:i:s'),
                     'check_out' => $checkOut->format('H:i:s'),
                     'status' => 'finished',
@@ -192,7 +205,7 @@ class StaffSeeder extends Seeder
         $selectedAttendances = $attendances->random(min($requestCount, $attendances->count()));
 
         foreach ($selectedAttendances as $attendance) {
-            $status = fake()->randomElement(['pending', 'approval', 'rejected']);
+            $status = fake()->randomElement(['pending', 'approval']);
 
             $modifiedCheckIn = Carbon::createFromTime(rand(8, 10), rand(0, 59));
             $modifiedCheckOut = $modifiedCheckIn->copy()->addHours(rand(7, 9))->addMinutes(rand(0, 59));
