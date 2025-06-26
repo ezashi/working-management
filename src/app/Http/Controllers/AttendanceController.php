@@ -25,7 +25,6 @@ class AttendanceController extends Controller
     return view('attendance', compact('currentStatus', 'todayAttendance', 'currentTime'));
   }
 
-
   public function checkIn(CheckInRequest $inRequest)
   {
     $attendance = Attendance::create([
@@ -38,7 +37,6 @@ class AttendanceController extends Controller
     return redirect()->route('attendance');
   }
 
-
   public function checkOut(CheckOutRequest $outRequest)
   {
     $attendance = auth()->user()->todayAttendance();
@@ -49,7 +47,6 @@ class AttendanceController extends Controller
 
     return redirect()->route('attendance');
   }
-
 
   public function breakStart(BreakStartRequest $startRequest)
   {
@@ -63,8 +60,7 @@ class AttendanceController extends Controller
     $attendance->update(['status' => 'break']);
 
     return redirect()->route('attendance');
-    }
-
+  }
 
   public function breakEnd(BreakEndRequest $endRequest)
   {
@@ -79,8 +75,6 @@ class AttendanceController extends Controller
 
     return redirect()->route('attendance');
   }
-
-
 
   public function list(Request $request)
   {
@@ -105,15 +99,9 @@ class AttendanceController extends Controller
     return view('list', compact('attendances', 'month', 'prevMonth', 'nextMonth'));
   }
 
-
-
   public function show($id)
   {
-    if (auth()->user()->isAdmin()) {
-      return redirect()->route('attendance.show', $id);
-    }
-
-    $attendance = Attendance::with('breaks')->findOrFail($id);
+    $attendance = Attendance::with(['user', 'breaks', 'modificationRequests'])->findOrFail($id);
 
     $pendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
@@ -121,46 +109,59 @@ class AttendanceController extends Controller
 
     $hasPendingRequest = $pendingRequest !== null;
 
+    // ミドルウェアで設定されたフラグまたは直接チェック
+    $isAdmin = request()->has('is_admin_request') || auth()->user()->isAdmin();
+
+    if ($isAdmin) {
+        return view('admin.show', compact('attendance', 'hasPendingRequest', 'pendingRequest'));
+    }
+
     return view('show', compact('attendance', 'hasPendingRequest', 'pendingRequest'));
   }
-
 
   public function update(AttendanceModificationRequest $request, $id)
   {
     $attendance = Attendance::findOrFail($id);
 
-    if (auth()->user()->isAdmin()) {
-      $modificationRequest = new AttendanceModificationRequest();
-      $validator = \Validator::make($request->all(), $modificationRequest->rules(), $modificationRequest->messages());
+    // ミドルウェアで設定されたフラグまたは直接チェック
+    $isAdmin = $request->has('is_admin_request') || auth()->user()->isAdmin();
 
-      if ($validator->fails()) {
-          return redirect()->back()
-              ->withErrors($validator)
-              ->withInput();
-      }
-
-      $attendance->update([
-        'check_in' => $request->check_in,
-        'check_out' => $request->check_out,
-        'note' => $request->note,
-      ]);
-
-      if ($request->has('breaks')) {
-        $attendance->breaks()->delete();
-
-        foreach ($request->breaks as $break) {
-          if (!empty($break['start_time'])) {
-            $attendance->breaks()->create([
-              'start_time' => $break['start_time'],
-              'end_time' => $break['end_time'] ?? null,
-            ]);
-          }
-        }
-      }
-
-      return redirect()->route('attendance.show', $attendance->id);
+    if ($isAdmin) {
+        return $this->adminUpdate($request, $attendance);
     }
 
+    return $this->userUpdate($request, $attendance);
+  }
+
+  private function adminUpdate(AttendanceModificationRequest $request, Attendance $attendance)
+  {
+    // 勤怠情報を直接更新
+    $attendance->update([
+      'check_in' => $request->check_in,
+      'check_out' => $request->check_out,
+      'note' => $request->note,
+    ]);
+
+    // 休憩時間を更新
+    if ($request->has('breaks')) {
+      $attendance->breaks()->delete();
+
+      foreach ($request->breaks as $break) {
+        if (!empty($break['start_time'])) {
+          $attendance->breaks()->create([
+            'start_time' => $break['start_time'],
+            'end_time' => $break['end_time'] ?? null,
+          ]);
+        }
+      }
+    }
+
+    return redirect()->route('attendance.show', $attendance->id);
+  }
+
+  private function userUpdate(AttendanceModificationRequest $request, Attendance $attendance)
+  {
+    // 既に申請中かチェック
     $hasPendingRequest = $attendance->modificationRequests()
       ->where('status', 'pending')
       ->exists();
@@ -169,6 +170,7 @@ class AttendanceController extends Controller
       return redirect()->route('attendance.show', $attendance->id);
     }
 
+    // 修正申請を作成
     ModificationRequest::create([
       'attendance_id' => $attendance->id,
       'user_id' => auth()->id(),

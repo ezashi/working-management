@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'auth.any' => \App\Http\Middleware\AuthAnyMiddleware::class,
-            'redirect.if.admin' => \App\Http\Middleware\RedirectIfAdmin::class,
+            'route.admin' => \App\Http\Middleware\RouteAdminMiddleware::class,
         ]);
 
         $middleware->group('web', [

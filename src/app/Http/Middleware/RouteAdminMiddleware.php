@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RedirectIfAdmin
+class RouteAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,16 +16,7 @@ class RedirectIfAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && auth()->user()->isAdmin()) {
-            $id = $request->route('id');
-            if ($id) {
-                // 管理者用コントローラーを直接呼び出し
-                $adminController = app(\App\Http\Controllers\AdminAttendanceController::class);
-
-                if ($request->isMethod('GET')) {
-                    return response($adminController->show($id)->render());
-                }
-            }
-            return redirect()->route('admin.attendance');
+            $request->merge(['is_admin_request' => true]);
         }
 
         return $next($request);

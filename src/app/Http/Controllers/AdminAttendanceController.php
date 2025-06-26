@@ -77,17 +77,4 @@ class AdminAttendanceController extends Controller
       'totalBreakMinutes'
     ));
   }
-
-  public function show($id)
-  {
-    $attendance = Attendance::with(['user', 'breaks', 'modificationRequests'])->findOrFail($id);
-
-    $pendingRequest = $attendance->modificationRequests()
-      ->where('status', 'pending')
-      ->first();
-
-    $hasPendingRequest = $pendingRequest !== null;
-
-    return view('admin.show', compact('attendance', 'hasPendingRequest', 'pendingRequest'));
-  }
 }

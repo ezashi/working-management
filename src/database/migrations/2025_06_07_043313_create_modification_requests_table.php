@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('modified_check_out')->nullable();
             $table->json('modified_breaks')->nullable();
             $table->text('modified_note')->nullable();
-            $table->enum('status', ['pending', 'approval', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approval'])->default('pending');
             $table->foreignId('modified_approval_by')->nullable()->constrained('users');
             $table->timestamp('modified_approval_at')->nullable();
             $table->timestamps();
