@@ -23,8 +23,6 @@ class RedirectIfAdmin
 
                 if ($request->isMethod('GET')) {
                     return response($adminController->show($id)->render());
-                } elseif ($request->isMethod('PUT') || $request->isMethod('PATCH')) {
-                    return $adminController->update($request, $id);
                 }
             }
             return redirect()->route('admin.attendance');

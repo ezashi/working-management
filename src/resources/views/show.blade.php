@@ -26,12 +26,21 @@
           @foreach($pendingRequest->modified_breaks as $index => $break)
             <p>休憩{{ $index + 1 }}: {{ $break['start_time'] ?? '-' }} ~ {{ $break['end_time'] ?? '-' }}</p>
           @endforeach
+        @else
+          <p>休憩</p>
+          @if($attendance->breaks && $attendance->breaks->count() > 0)
+            @foreach($attendance->breaks as $index => $break)
+              <p>休憩{{ $index + 1 }}: {{ $break->start_time ? substr($break->start_time, 0, 5) : '-' }} ~ {{ $break->end_time ? substr($break->end_time, 0, 5) : '-' }}</p>
+            @endforeach
+          @else
+            <p>-</p>
+          @endif
         @endif
       </div>
 
       <div>
         <p>備考</p>
-        <p>{{ $pendingRequest->modified_note ?? '-' }}</p>
+        <p>{{ $pendingRequest->modified_note ?? ($attendance->note ?? '-') }}</p>
       </div>
     </div>
 
@@ -101,11 +110,7 @@
         </div>
       </div>
       <div>
-        @if($hasPendingRequest)
-          <p>*承認待ちのため修正はできません。</p>
-        @else
-          <button type="submit">修正</button>
-        @endif
+        <button type="submit">修正</button>
       </div>
     </form>
   @endif

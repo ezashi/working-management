@@ -90,39 +90,4 @@ class AdminAttendanceController extends Controller
 
     return view('admin.show', compact('attendance', 'hasPendingRequest', 'pendingRequest'));
   }
-
-  public function update(AttendanceModificationRequest $request, $id)
-  {
-    $modificationRequest = new AttendanceModificationRequest();
-    $validator = \Validator::make($request->all(), $modificationRequest->rules(), $modificationRequest->messages());
-
-    if ($validator->fails()) {
-        return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
-    }
-
-    $attendance = Attendance::findOrFail($id);
-
-    $attendance->update([
-      'check_in' => $request->check_in,
-      'check_out' => $request->check_out,
-      'note' => $request->note,
-    ]);
-
-    if ($request->has('breaks')) {
-      $attendance->breaks()->delete();
-
-      foreach ($request->breaks as $break) {
-        if (!empty($break['start_time'])) {
-          $attendance->breaks()->create([
-            'start_time' => $break['start_time'],
-            'end_time' => $break['end_time'] ?? null,
-          ]);
-        }
-      }
-    }
-
-    return redirect()->route('attendance.show', $attendance->id);
-  }
 }
