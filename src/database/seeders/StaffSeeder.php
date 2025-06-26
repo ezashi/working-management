@@ -29,7 +29,7 @@ class StaffSeeder extends Seeder
 
             for ($i = 0; $i < $attendanceCount; $i++) {
                 $date = Carbon::now()->subDays(rand(1, 30));
-                
+
                 if ($attendances->where('date', $date->format('Y-m-d'))->isNotEmpty()) {
                     continue;
                 }
@@ -116,7 +116,7 @@ class StaffSeeder extends Seeder
     private function createTodayAttendance($user, $index)
     {
         $today = Carbon::today();
-        
+
         $statusType = $index % 5;
 
         switch ($statusType) {
@@ -193,7 +193,7 @@ class StaffSeeder extends Seeder
 
         foreach ($selectedAttendances as $attendance) {
             $status = fake()->randomElement(['pending', 'approval', 'rejected']);
-            
+
             $modifiedCheckIn = Carbon::createFromTime(rand(8, 10), rand(0, 59));
             $modifiedCheckOut = $modifiedCheckIn->copy()->addHours(rand(7, 9))->addMinutes(rand(0, 59));
 
