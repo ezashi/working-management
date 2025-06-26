@@ -43,6 +43,28 @@ class ModificationRequestController extends Controller
   }
 
 
+  public function showApproval($id)
+  {
+    if ($user->isAdmin()) {
+      $modificationRequest = ModificationRequest::with(['attendance.user', 'attendance.breaks', 'approval'])
+        ->where('id', $id)
+        ->where('status', 'approval')
+        ->firstOrFail();
+
+      return view('admin.approval_show', compact('modificationRequest'));
+    }else {
+      $modificationRequest = ModificationRequest::with(['attendance.user', 'attendance.breaks'])
+        ->where('id', $id)
+        ->where('user_id', auth()->id())
+        ->where('status', 'approval')
+        ->firstOrFail();
+
+      return view('approval_show', compact('modificationRequest'));
+    }
+  }
+
+
+
   public function show($attendance_correct_request)
   {
     $modificationRequest = ModificationRequest::with(['attendance.user', 'attendance.breaks', 'user'])->findOrFail($attendance_correct_request);

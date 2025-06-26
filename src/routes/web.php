@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     // 申請画面
     Route::get('/stamp_correction_request/list', [ModificationRequestController::class, 'index'])->name('correction.request.index');
+    Route::get('/stamp_correction_request/approval/{id}', [ModificationRequestController::class, 'showApproval'])->name('correction.request.approval.show');
 });
 
 // 管理者ログイン

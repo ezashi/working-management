@@ -66,7 +66,7 @@
             <td>{{ $request->modified_note }}</td>
             <td>{{ $request->modified_approval_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('attendance.show', $request->attendance->id) }}">詳細</a>
+              <a href="{{ route('correction.request.approved.show', $request->id) }}">詳細</a>
             </td>
           </tr>
           @endforeach
