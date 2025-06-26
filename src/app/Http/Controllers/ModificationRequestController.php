@@ -45,6 +45,8 @@ class ModificationRequestController extends Controller
 
   public function showApproval($id)
   {
+    $user = auth()->user();
+
     if ($user->isAdmin()) {
       $modificationRequest = ModificationRequest::with(['attendance.user', 'attendance.breaks', 'approval'])
         ->where('id', $id)
