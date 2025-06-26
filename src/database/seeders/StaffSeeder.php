@@ -56,7 +56,7 @@ class StaffSeeder extends Seeder
                     'check_in' => $checkIn->format('H:i:s'),
                     'check_out' => $checkOut->format('H:i:s'),
                     'status' => 'finished',
-                    'note' => rand(1, 10) <= 3 ? fake()->sentence() : null,
+                    'note' => null
                 ]);
 
                 $attendances->push($attendance);
