@@ -144,7 +144,7 @@ class AttendanceController extends Controller
         }
       }
 
-      return redirect()->route('attendance.show', $attendance->id);
+      return redirect()->route('admin.attendance');
     }
 
     $hasPendingRequest = $attendance->modificationRequests()
