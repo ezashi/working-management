@@ -93,6 +93,15 @@ class AdminAttendanceController extends Controller
 
   public function update(AttendanceModificationRequest $request, $id)
   {
+    $modificationRequest = new AttendanceModificationRequest();
+    $validator = \Validator::make($request->all(), $modificationRequest->rules(), $modificationRequest->messages());
+
+    if ($validator->fails()) {
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+
     $attendance = Attendance::findOrFail($id);
 
     $attendance->update([

@@ -2,7 +2,7 @@
 @section('content')
 <div>
   <h2>勤務詳細</h2>
-  <form action="{{ route('admin.update', $attendance->id) }}" method="post">
+  <form action="{{ route('attendance.update', $attendance->id) }}" method="post">
     @csrf
     @method('put')
     <div>

@@ -22,7 +22,7 @@ class RedirectIfAdmin
                 $adminController = app(\App\Http\Controllers\AdminAttendanceController::class);
 
                 if ($request->isMethod('GET')) {
-                    return $adminController->show($id);
+                    return response($adminController->show($id)->render());
                 } elseif ($request->isMethod('PUT') || $request->isMethod('PATCH')) {
                     return $adminController->update($request, $id);
                 }
