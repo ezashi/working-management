@@ -29,7 +29,7 @@ class StaffSeeder extends Seeder
 
             for ($i = 0; $i < $attendanceCount; $i++) {
                 $date = Carbon::now()->subDays(rand(1, 30));
-
+                
                 if ($attendances->where('date', $date->format('Y-m-d'))->isNotEmpty()) {
                     continue;
                 }
@@ -54,8 +54,8 @@ class StaffSeeder extends Seeder
                 $attendances->push($attendance);
 
                 if (rand(1, 10) <= 8) {
-                    $this->createBreakTimes($attendance, $checkIn, $checkOut);
-                }
+                $this->createBreakTimes($attendance, $checkIn, $checkOut);
+            }
             }
 
             $this->createTodayAttendance($user, $index);
@@ -75,10 +75,10 @@ class StaffSeeder extends Seeder
             $lunchStart = Carbon::createFromTime(12, rand(0, 30));
             $lunchEnd = $lunchStart->copy()->addMinutes(rand(45, 75));
 
-            $breaks[] = [
-                'start_time' => $lunchStart->format('H:i:s'),
-                'end_time' => $lunchEnd->format('H:i:s'),
-            ];
+        $breaks[] = [
+            'start_time' => $lunchStart->format('H:i:s'),
+            'end_time' => $lunchEnd->format('H:i:s'),
+        ];
         }
 
         if (rand(1, 10) <= 4) {
@@ -89,6 +89,16 @@ class StaffSeeder extends Seeder
                 'start_time' => $breakStart->format('H:i:s'),
                 'end_time' => $breakEnd->format('H:i:s'),
             ];
+        }
+
+        if (rand(1, 10) <= 3) {
+            $morningBreakStart = Carbon::createFromTime(rand(10, 11), rand(0, 59));
+            $morningBreakEnd = $morningBreakStart->copy()->addMinutes(rand(10, 15));
+
+            array_unshift($breaks, [
+                'start_time' => $morningBreakStart->format('H:i:s'),
+                'end_time' => $morningBreakEnd->format('H:i:s'),
+            ]);
         }
 
         foreach ($breaks as $break) {
@@ -106,7 +116,7 @@ class StaffSeeder extends Seeder
     private function createTodayAttendance($user, $index)
     {
         $today = Carbon::today();
-
+        
         $statusType = $index % 5;
 
         switch ($statusType) {
@@ -154,6 +164,14 @@ class StaffSeeder extends Seeder
                     'start_time' => '12:00:00',
                     'end_time' => '13:00:00',
                 ]);
+
+                if (rand(1, 10) <= 5) {
+                    BreakTime::create([
+                        'attendance_id' => $attendance->id,
+                        'start_time' => '15:00:00',
+                        'end_time' => '15:15:00',
+                    ]);
+                }
                 break;
 
             default:
@@ -175,9 +193,20 @@ class StaffSeeder extends Seeder
 
         foreach ($selectedAttendances as $attendance) {
             $status = fake()->randomElement(['pending', 'approval', 'rejected']);
-
+            
             $modifiedCheckIn = Carbon::createFromTime(rand(8, 10), rand(0, 59));
             $modifiedCheckOut = $modifiedCheckIn->copy()->addHours(rand(7, 9))->addMinutes(rand(0, 59));
+
+            $reason = fake()->randomElement([
+                '電車遅延のため出勤時間を修正お願いします。',
+                '病院での検査のため早退させていただきました。',
+                '打刻し忘れのため修正をお願いします。',
+                '残業をした分の退勤時間修正をお願いします。',
+                'システムエラーで正しく打刻されませんでした。',
+                '会議が長引いたため退勤時間の修正をお願いします。',
+                '交通事故渋滞で遅刻したため出勤時間を修正してください。',
+                '体調不良で早退したため退勤時間を修正お願いします。'
+            ]);
 
             $modificationRequest = ModificationRequest::create([
                 'attendance_id' => $attendance->id,
@@ -190,16 +219,14 @@ class StaffSeeder extends Seeder
                         'end_time' => '13:00',
                     ]
                 ],
-                'modified_note' => fake()->randomElement([
-                    '電車遅延のため出勤時間を修正お願いします。',
-                    '病院での検査のため早退させていただきました。',
-                    '打刻し忘れのため修正をお願いします。',
-                    '残業をした分の退勤時間修正をお願いします。',
-                    'システムエラーで正しく打刻されませんでした。'
-                ]),
+                'modified_note' => $reason,
                 'status' => $status,
                 'modified_approval_by' => $status !== 'pending' ? 1 : null,
                 'modified_approval_at' => $status !== 'pending' ? fake()->dateTimeBetween('-7 days', 'now') : null,
+            ]);
+
+            $attendance->update([
+                'note' => $reason
             ]);
         }
     }
