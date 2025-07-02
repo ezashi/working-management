@@ -61,9 +61,7 @@ class StaffSeeder extends Seeder
 
                 $attendances->push($attendance);
 
-                if (rand(1, 10) <= 8) {
-                    $this->createBreakTimes($attendance, $checkIn, $checkOut);
-                }
+                $this->createBreakTimes($attendance, $checkIn, $checkOut);
             }
 
             $this->createTodayAttendance($user, $index);
@@ -130,65 +128,28 @@ class StaffSeeder extends Seeder
             return;
         }
 
-        $statusType = $index % 5;
+        $checkIn = $today->copy()->setTime(rand(8, 10), rand(0, 59));
+        $checkOut = $checkIn->copy()->addHours(rand(7, 9))->addMinutes(rand(0, 59));
+        $attendance = Attendance::create([
+            'user_id' => $user->id,
+            'date' => $todayString,
+            'check_in' => $checkIn->format('H:i:s'),
+            'check_out' => $checkOut->format('H:i:s'),
+            'status' => 'finished',
+        ]);
 
-        switch ($statusType) {
-            case 0:
-                $checkIn = $today->copy()->setTime(rand(8, 10), rand(0, 59));
-                $attendance = Attendance::create([
-                    'user_id' => $user->id,
-                    'date' => $todayString,
-                    'check_in' => $checkIn->format('H:i:s'),
-                    'check_out' => null,
-                    'status' => 'working',
-                ]);
-                break;
+        BreakTime::create([
+            'attendance_id' => $attendance->id,
+            'start_time' => '12:00:00',
+            'end_time' => '13:00:00',
+        ]);
 
-            case 1:
-                $checkIn = $today->copy()->setTime(rand(8, 10), rand(0, 59));
-                $attendance = Attendance::create([
-                    'user_id' => $user->id,
-                    'date' => $todayString,
-                    'check_in' => $checkIn->format('H:i:s'),
-                    'check_out' => null,
-                    'status' => 'break',
-                ]);
-
-                BreakTime::create([
-                    'attendance_id' => $attendance->id,
-                    'start_time' => Carbon::now()->subMinutes(rand(15, 45))->format('H:i:s'),
-                    'end_time' => null,
-                ]);
-                break;
-
-            case 2:
-                $checkIn = $today->copy()->setTime(rand(8, 10), rand(0, 59));
-                $checkOut = $checkIn->copy()->addHours(rand(7, 9))->addMinutes(rand(0, 59));
-                $attendance = Attendance::create([
-                    'user_id' => $user->id,
-                    'date' => $todayString,
-                    'check_in' => $checkIn->format('H:i:s'),
-                    'check_out' => $checkOut->format('H:i:s'),
-                    'status' => 'finished',
-                ]);
-
-                BreakTime::create([
-                    'attendance_id' => $attendance->id,
-                    'start_time' => '12:00:00',
-                    'end_time' => '13:00:00',
-                ]);
-
-                if (rand(1, 10) <= 5) {
-                    BreakTime::create([
-                        'attendance_id' => $attendance->id,
-                        'start_time' => '15:00:00',
-                        'end_time' => '15:15:00',
-                    ]);
-                }
-                break;
-
-            default:
-                break;
+        if (rand(1, 10) <= 5) {
+            BreakTime::create([
+                'attendance_id' => $attendance->id,
+                'start_time' => '15:00:00',
+                'end_time' => '15:15:00',
+            ]);
         }
     }
 
