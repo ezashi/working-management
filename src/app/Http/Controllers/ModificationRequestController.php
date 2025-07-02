@@ -19,12 +19,7 @@ class ModificationRequestController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
-      $approvalRequests = ModificationRequest::with(['attendance.user', 'user', 'approval'])
-        ->where('status', 'approval')
-        ->orderBy('modified_approval_at', 'desc')
-        ->get();
-
-      return view('admin.index', compact('pendingRequests', 'approvalRequests'));
+      return view('admin.index', compact('pendingRequests'));
     } else{
       $pendingRequests = $user->modificationRequests()
         ->with('attendance')
@@ -32,13 +27,30 @@ class ModificationRequestController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+      return view('index', compact('pendingRequests'));
+    }
+  }
+
+
+  public function indexApprove()
+  {
+    $user = auth()->user();
+
+    if($user->isAdmin()) {
+      $approvalRequests = ModificationRequest::with(['attendance.user', 'user', 'approval'])
+        ->where('status', 'approval')
+        ->orderBy('modified_approval_at', 'desc')
+        ->get();
+
+      return view('admin.indexApprove', compact('approvalRequests'));
+    }else {
       $approvalRequests = $user->modificationRequests()
         ->with('attendance')
         ->where('status', 'approval')
         ->orderBy('modified_approval_at', 'desc')
         ->get();
 
-      return view('index', compact('pendingRequests', 'approvalRequests'));
+      return view('indexApprove', compact('approvalRequests'));
     }
   }
 

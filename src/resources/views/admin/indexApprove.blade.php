@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('content')
 <div>
   <h2>申請一覧</h2>
@@ -6,11 +6,11 @@
 <div>
   <div>
     <h3>
-      承認待ち
-      <a href="{{ route('correction.request.approval.index') }}">承認済み</a>
+      <a href="{{ route('correction.request.index') }}">承認待ち</a>
+      承認済み
     </h3>
-    @if($pendingRequests->isEmpty())
-      <p>承認待ちの申請はありません。</p>
+    @if($approvalRequests->isEmpty())
+      <p>承認済みの申請はありません。</p>
     @else
       <table>
         <thead>
@@ -24,17 +24,17 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($pendingRequests as $request)
+          @foreach($approvalRequests as $request)
           <tr>
             <td>
-              <span>承認待ち</span>
+              <span>承認済み</span>
             </td>
-            <td>{{ auth()->user()->name }}</td>
+            <td>{{ $request->user->name }}</td>
             <td>{{ $request->attendance->date->format('Y/m/d') }}</td>
             <td>{{ $request->modified_note }}</td>
-            <td>{{ $request->created_at->format('Y/m/d') }}</td>
+            <td>{{ $request->modified_approval_at->format('Y/m/d') }}</td>
             <td>
-              <a href="{{ route('attendance.show', $request->attendance->id) }}">詳細</a>
+              <a href="{{ route('correction.request.approval.show', $request->id) }}">詳細</a>
             </td>
           </tr>
           @endforeach
