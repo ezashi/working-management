@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>勤怠管理</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
   </head>
   <body>
     <header>

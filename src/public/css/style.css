@@ -1,0 +1,688 @@
+/* ====================
+   基本設定とリセット
+==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Meiryo', 'MS Gothic', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ====================
+   ヘッダー
+==================== */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+header img {
+    height: 32px;
+    width: auto;
+}
+
+header nav {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+header a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+header form {
+    margin: 0;
+}
+
+header button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+header button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ====================
+   メインコンテンツ
+==================== */
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ====================
+   カード・コンテナ
+==================== */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ====================
+   タイトル・見出し
+==================== */
+h1,
+h2,
+h3 {
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* ====================
+   フォーム要素
+==================== */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="time"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* ====================
+   ボタン
+==================== */
+button,
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover,
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+button:active,
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+    color: #2d3748;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+    color: #c53030;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+    color: #22543d;
+}
+
+/* ====================
+   ステータス表示
+==================== */
+.status {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.status-working {
+    background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+    color: #22543d;
+}
+
+.status-break {
+    background: linear-gradient(135deg, #fef5e7 0%, #fbd38d 100%);
+    color: #c05621;
+}
+
+.status-finished {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+    color: #4a5568;
+}
+
+.status-not-working {
+    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+    color: #c53030;
+}
+
+/* ====================
+   勤怠打刻画面
+==================== */
+.attendance-container {
+    text-align: center;
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 500px;
+}
+
+.current-time {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 1.5rem 0;
+    font-family: 'Courier New', monospace;
+}
+
+.attendance-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.attendance-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    min-height: 60px;
+    transition: all 0.3s ease;
+}
+
+/* ====================
+   テーブル
+==================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* ====================
+   ナビゲーション
+==================== */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.navigation a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.navigation a:hover {
+    background-color: #edf2f7;
+    transform: translateY(-2px);
+}
+
+.navigation span {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #2d3748;
+}
+
+/* ====================
+   エラーメッセージ
+==================== */
+.error-message {
+    color: #e53e3e;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #fed7d7;
+    border-radius: 6px;
+    border-left: 4px solid #e53e3e;
+}
+
+/* ====================
+   成功メッセージ
+==================== */
+.success-message {
+    color: #38a169;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #c6f6d5;
+    border-radius: 6px;
+    border-left: 4px solid #38a169;
+}
+
+/* ====================
+   警告メッセージ
+==================== */
+.warning-message {
+    color: #d69e2e;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #fef5e7;
+    border-radius: 6px;
+    border-left: 4px solid #d69e2e;
+}
+
+/* ====================
+   申請ステータス
+==================== */
+.request-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.request-pending {
+    background-color: #fef5e7;
+    color: #d69e2e;
+    border: 1px solid #f6e05e;
+}
+
+.request-approved {
+    background-color: #c6f6d5;
+    color: #38a169;
+    border: 1px solid #9ae6b4;
+}
+
+/* ====================
+   タブナビゲーション
+==================== */
+.tab-navigation {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.tab-link {
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: #718096;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab-link.active,
+.tab-link:hover {
+    color: #667eea;
+    border-bottom-color: #667eea;
+}
+
+/* ====================
+   レスポンシブデザイン
+==================== */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header nav {
+        justify-content: center;
+        width: 100%;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th,
+    td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .attendance-container {
+        margin: 1rem;
+        padding: 2rem;
+    }
+
+    .current-time {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-navigation {
+        flex-direction: column;
+    }
+
+    .attendance-button {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    table {
+        font-size: 0.8rem;
+    }
+
+    th,
+    td {
+        padding: 0.5rem 0.25rem;
+    }
+}
+
+/* ====================
+   詳細画面用スタイル
+==================== */
+.detail-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.detail-section h3 {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.detail-section p {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* ====================
+   フォームレイアウト
+==================== */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form-row input {
+    flex: 1;
+}
+
+.form-row .separator {
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* ====================
+   ローディング・アニメーション
+==================== */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ====================
+   ユーティリティクラス
+==================== */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mt-3 {
+    margin-top: 1.5rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+.p-1 {
+    padding: 0.5rem;
+}
+
+.p-2 {
+    padding: 1rem;
+}
+
+.p-3 {
+    padding: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.w-half {
+    width: 50%;
+}
+
+.bg-gray-100 {
+    background-color: #f7fafc;
+}
+
+.bg-blue-50 {
+    background-color: #ebf8ff;
+}
+
+.bg-green-50 {
+    background-color: #f0fff4;
+}
+
+.bg-red-50 {
+    background-color: #fff5f5;
+}
+
+.bg-yellow-50 {
+    background-color: #fffff0;
+}
