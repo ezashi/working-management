@@ -148,7 +148,7 @@ main button[type="submit"]:hover {
 
 /* リンク */
 a {
-    color: #000;
+    color: #0000ff;
     text-decoration: none;
 }
 
@@ -172,16 +172,16 @@ table {
 }
 
 th {
-    background-color: #f8f8f8;
+    background-color: #fff;
     padding: 16px;
     text-align: left;
     font-weight: 600;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 5px solid #ddd;
 }
 
 td {
     padding: 16px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 4px solid #eee;
 }
 
 tr:hover {
@@ -211,8 +211,8 @@ div:has(> a + span + a) {
 span:first-child {
     display: inline-block;
     padding: 8px 16px;
-    background-color: #000;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
     border-radius: 4px;
     margin-bottom: 16px;
 }
@@ -242,7 +242,6 @@ h3>a:hover {
 @media (max-width: 768px) {
     header {
         padding: 16px 20px;
-        flex-wrap: wrap;
     }
 
     header a {
@@ -284,9 +283,7 @@ main>div>form>div,
 main>div>div {
     background-color: #fff;
     padding: 32px;
-    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 24px;
 }
 
 /* 時間入力フィールドの横並び */
