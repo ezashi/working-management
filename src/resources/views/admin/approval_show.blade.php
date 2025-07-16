@@ -11,8 +11,8 @@
     </div>
 
     <div>
-      <p>出勤・退勤</p>
       <p>
+        出勤・退勤
         {{ $modificationRequest->modified_check_in ? substr($modificationRequest->modified_check_in, 0, 5) : '-' }}
         ~
         {{ $modificationRequest->modified_check_out ? substr($modificationRequest->modified_check_out, 0, 5) : '-' }}
@@ -21,19 +21,17 @@
 
     <div>
       @if($modificationRequest->modified_breaks)
-        <p>休憩</p>
         @foreach($modificationRequest->modified_breaks as $index => $break)
-          <p>休憩{{ $index + 1 }}: {{ $break['start_time'] ?? '-' }} ~ {{ $break['end_time'] ?? '-' }}</p>
+          <p>休憩{{ $index + 1 }} {{ $break['start_time'] ?? '-' }} ~ {{ $break['end_time'] ?? '-' }}</p>
         @endforeach
-      @else
-        <p>休憩</p>
-        <p>-</p>
       @endif
     </div>
 
     <div>
-      <p>備考</p>
-      <p>{{ $modificationRequest->modified_note ?? '-' }}</p>
+      <p>
+        備考
+        {{ $modificationRequest->modified_note ?? '-' }}
+      </p>
     </div>
   </div>
 </div>

@@ -16,10 +16,12 @@
 
     <div>
       <div>
-        <p>出勤・退勤</p>
-        <input type="time" name="check_in" id="check_in" value="{{ old('check_in', $attendance->check_in ? substr($attendance->check_in, 0, 5) : '') }}">
-        ~
-        <input type="time" name="check_out" id="check_out" value="{{ old('check_out', $attendance->check_out ? substr($attendance->check_out, 0, 5) : '') }}">
+        <p>
+          出勤・退勤
+          <input type="time" name="check_in" id="check_in" value="{{ old('check_in', $attendance->check_in ? substr($attendance->check_in, 0, 5) : '') }}">
+          ~
+          <input type="time" name="check_out" id="check_out" value="{{ old('check_out', $attendance->check_out ? substr($attendance->check_out, 0, 5) : '') }}">
+        </p>
         @error('check_in')
           <div class="error-message">{{ $message }}</div>
         @enderror
@@ -31,10 +33,12 @@
       <div>
         <div>
           @foreach($attendance->breaks as $index => $break)
-            <p>休憩{{ $index + 1 }}</p>
-            <input type="time" name="breaks[{{ $index }}][start_time]" value="{{ old('breaks.'.$index.'.start_time', $break->start_time ? substr($break->start_time, 0, 5) : '') }}">
-            ~
-            <input type="time" name="breaks[{{ $index }}][end_time]" value="{{ old('breaks.'.$index.'.end_time', $break->end_time ? substr($break->end_time, 0, 5) : '') }}">
+            <p>
+              休憩{{ $index + 1 }}
+              <input type="time" name="breaks[{{ $index }}][start_time]" value="{{ old('breaks.'.$index.'.start_time', $break->start_time ? substr($break->start_time, 0, 5) : '') }}">
+              ~
+              <input type="time" name="breaks[{{ $index }}][end_time]" value="{{ old('breaks.'.$index.'.end_time', $break->end_time ? substr($break->end_time, 0, 5) : '') }}">
+            </p>
             @error('breaks')
               <div class="error-message">{{ $message }}</div>
             @enderror
@@ -46,10 +50,12 @@
             $newIndex = count($attendance->breaks);
           @endphp
           <div>
-            <p>休憩{{ $newIndex + 1 }}</p>
-            <input type="time" name="breaks[{{ $newIndex }}][start_time]" value="{{ old('breaks.'.$newIndex.'.start_time', '') }}">
-            ~
-            <input type="time" name="breaks[{{ $newIndex }}][end_time]" value="{{ old('breaks.'.$newIndex.'.end_time', '') }}">
+            <p>
+              休憩{{ $newIndex + 1 }}
+              <input type="time" name="breaks[{{ $newIndex }}][start_time]" value="{{ old('breaks.'.$newIndex.'.start_time', '') }}">
+              ~
+              <input type="time" name="breaks[{{ $newIndex }}][end_time]" value="{{ old('breaks.'.$newIndex.'.end_time', '') }}">
+            </p>
             @error('breaks')
               <div class="error-message">{{ $message }}</div>
             @enderror
@@ -58,8 +64,10 @@
       </div>
 
       <div>
-        <p>備考</p>
-        <textarea name="note" id="note">{{ old('note', $attendance->note) }}</textarea>
+        <p>
+          備考
+          <textarea name="note" id="note">{{ old('note', $attendance->note) }}</textarea>
+        </p>
         @error('note')
           <div class="error-message">{{ $message }}</div>
         @enderror

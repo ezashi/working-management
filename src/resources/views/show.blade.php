@@ -12,8 +12,8 @@
       </div>
 
       <div>
-        <p>出勤・退勤</p>
         <p>
+          出勤・退勤
           {{ $pendingRequest->modified_check_in ? substr($pendingRequest->modified_check_in, 0, 5) : ($attendance->check_in ? substr($attendance->check_in, 0, 5) : '-') }}
           ~
           {{ $pendingRequest->modified_check_out ? substr($pendingRequest->modified_check_out, 0, 5) : ($attendance->check_out ? substr($attendance->check_out, 0, 5) : '-') }}
@@ -22,25 +22,23 @@
 
       <div>
         @if($pendingRequest->modified_breaks)
-          <p>休憩</p>
           @foreach($pendingRequest->modified_breaks as $index => $break)
             <p>休憩{{ $index + 1 }}: {{ $break['start_time'] ?? '-' }} ~ {{ $break['end_time'] ?? '-' }}</p>
           @endforeach
         @else
-          <p>休憩</p>
           @if($attendance->breaks && $attendance->breaks->count() > 0)
             @foreach($attendance->breaks as $index => $break)
               <p>休憩{{ $index + 1 }}: {{ $break->start_time ? substr($break->start_time, 0, 5) : '-' }} ~ {{ $break->end_time ? substr($break->end_time, 0, 5) : '-' }}</p>
             @endforeach
-          @else
-            <p>-</p>
           @endif
         @endif
       </div>
 
       <div>
-        <p>備考</p>
-        <p>{{ $pendingRequest->modified_note ?? ($attendance->note ?? '-') }}</p>
+        <p>
+          備考
+          {{ $pendingRequest->modified_note ?? ($attendance->note ?? '-') }}
+        </p>
       </div>
     </div>
 
