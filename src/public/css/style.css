@@ -18,10 +18,15 @@ header {
     height: 64px;
 }
 
+header>div {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
 header a {
     color: #fff;
     text-decoration: none;
-    margin-right: 24px;
     font-size: 14px;
 }
 
@@ -36,18 +41,15 @@ header form {
 
 header button[type="submit"] {
     background: none;
-    border: 1px solid #fff;
+    border: none;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
-    padding: 6px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    padding: 0;
 }
 
 header button[type="submit"]:hover {
-    background-color: #fff;
-    color: #000;
+    opacity: 0.8;
 }
 
 /* メインコンテンツ */
