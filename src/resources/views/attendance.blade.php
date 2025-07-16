@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div>
-  <span>
+  <span class="status">
     @if($currentStatus === 'not_working')
       勤務外
     @elseif($currentStatus === 'working')
@@ -13,7 +13,9 @@
     @endif
   </span>
   <p>
-    <span id="current-time">{{ $currentTime }}</span>
+    <span id="current-day" class="day">{{ $currentDay }}</span>
+    <br>
+    <span id="current-time" class="time">{{ $currentTime }}</span>
   </p>
   @if($currentStatus === 'not_working')
     <form method="POST" action="{{ route('attendance.check-in') }}">

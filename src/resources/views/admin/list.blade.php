@@ -22,7 +22,7 @@
       <tbody>
         @foreach($attendances as $attendance)
           <tr>
-            <td>{{ $attendance->date->format('m/d') }}</td>
+            <td>{{ $attendance->date->isoFormat('M/D(ddd)') }}</td>
             <td>{{ $attendance->check_in ? substr($attendance->check_in, 0, 5) : '' }}</td>
             <td>{{ $attendance->check_out ? substr($attendance->check_out, 0, 5) : '' }}</td>
             <td>{{ $attendance->totalBreakTime() ? gmdate('H:i', $attendance->totalBreakTime() * 60) : '' }}</td>

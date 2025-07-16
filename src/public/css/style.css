@@ -100,7 +100,7 @@ input[type="date"],
 textarea {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #000;
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
@@ -148,6 +148,12 @@ main button[type="submit"]:hover {
 
 /* リンク */
 a {
+    color: #000;
+    text-decoration: none;
+}
+
+a.register,
+a.login {
     color: #0000ff;
     text-decoration: none;
 }
@@ -201,20 +207,37 @@ div:has(> a + span + a) {
     gap: 16px;
 }
 
-/* 勤怠画面 */
-#current-time {
-    font-size: 24px;
-    font-weight: 500;
+/* ステータス表示 */
+span.status {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #dcdcdc;
+    color: #808080;
+    border-radius: 4px;
+    margin-bottom: 16px;
 }
 
-/* ステータス表示 */
-span:first-child {
+/* 日付表示 */
+span.day {
+    font-size: 20px;
+    font-weight: 500;
     display: inline-block;
     padding: 8px 16px;
     background-color: #fff;
     color: #000;
     border-radius: 4px;
     margin-bottom: 16px;
+}
+
+/* 時間表示 */
+span.time {
+    font-size: 40px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 4px;
 }
 
 /* 詳細画面 */

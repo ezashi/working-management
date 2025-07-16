@@ -20,9 +20,10 @@ class AttendanceController extends Controller
     $user = auth()->user();
     $currentStatus = $user->currentStatus();
     $todayAttendance = $user->todayAttendance();
-    $currentTime = Carbon::now()->isoFormat('YYYY年M月D日(ddd) HH:mm');
+    $currentDay = Carbon::now()->isoFormat('YYYY年M月D日(ddd)');
+    $currentTime = Carbon::now()->isoFormat('HH:mm');
 
-    return view('attendance', compact('currentStatus', 'todayAttendance', 'currentTime'));
+    return view('attendance', compact('currentStatus', 'todayAttendance', 'currentDay', 'currentTime'));
   }
 
   public function checkIn(CheckInRequest $inRequest)
