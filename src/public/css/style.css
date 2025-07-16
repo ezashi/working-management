@@ -39,6 +39,7 @@ header form {
     margin: 0;
 }
 
+/* ヘッダー内のログアウトボタンのスタイル統一 */
 header button[type="submit"] {
     background: none;
     border: none;
@@ -46,6 +47,9 @@ header button[type="submit"] {
     font-size: 14px;
     cursor: pointer;
     padding: 0;
+    margin: 0;
+    text-decoration: none;
+    display: inline;
 }
 
 header button[type="submit"]:hover {
@@ -73,10 +77,7 @@ h3 {
 
 /* フォーム全般 */
 form {
-    background-color: #fff;
-    padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     margin: 0 auto;
 }
@@ -120,8 +121,8 @@ textarea {
     resize: vertical;
 }
 
-/* ボタン */
-button[type="submit"] {
+/* メインコンテンツ内のボタン */
+main button[type="submit"] {
     background-color: #000;
     color: #fff;
     padding: 12px 32px;
@@ -134,7 +135,7 @@ button[type="submit"] {
     min-width: 200px;
 }
 
-button[type="submit"]:hover {
+main button[type="submit"]:hover {
     background-color: #333;
 }
 
