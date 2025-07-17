@@ -43,20 +43,18 @@ class AttendanceModificationRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($this->check_in && $this->check_out && $this->breaks) {
+                $checkIn = strtotime($this->check_in);
+                $checkOut = strtotime($this->check_out);
+
                 foreach ($this->breaks as $index => $break) {
+                    // 休憩開始時間または終了時間が入力されている場合
                     if (!empty($break['start_time']) || !empty($break['end_time'])) {
-                        if (empty($break['start_time']) && !empty($break['end_time'])) {
-                            $validator->errors()->add("breaks.{$index}.start_time", '休憩時間が勤務時間外です');
+                        $breakStart = strtotime($break['start_time']);
+                        $breakEnd = strtotime($break['end_time']);
+                        // 休憩時間が勤務時間外の場合
+                        if ($breakStart < $checkIn || $breakEnd > $checkOut) {
+                            $validator->errors()->add("breaks.{$index}", '休憩時間が勤務時間外です');
                             continue;
-                        }
-                        if (isset($break['start_time']) && isset($break['end_time'])) {
-                            if ($break['start_time'] < $this->check_in ||
-                                $break['end_time'] > $this->check_out ||
-                                $break['start_time'] > $this->check_out ||
-                                $break['end_time'] < $this->check_in) {
-                                    $validator->errors()->add("breaks.{$index}", '休憩時間が勤務時間外です');
-                                    break;
-                            }
                         }
                     }
                 }
