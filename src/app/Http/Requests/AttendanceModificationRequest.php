@@ -47,15 +47,36 @@ class AttendanceModificationRequest extends FormRequest
                 $checkOut = strtotime($this->check_out);
 
                 foreach ($this->breaks as $index => $break) {
-                    // 休憩開始時間または終了時間が入力されている場合
-                    if (!empty($break['start_time']) || !empty($break['end_time'])) {
+                    // 休憩開始時間と終了時間の両方が入力されている場合のみチェック
+                    if (!empty($break['start_time']) && !empty($break['end_time'])) {
                         $breakStart = strtotime($break['start_time']);
                         $breakEnd = strtotime($break['end_time']);
+
+                        // 休憩開始時間が終了時間より後の場合
+                        if ($breakStart >= $breakEnd) {
+                            $validator->errors()->add("breaks.{$index}.end_time", '休憩開始時間もしくは休憩終了時間が不適切な値です');
+                            continue;
+                        }
+
                         // 休憩時間が勤務時間外の場合
                         if ($breakStart < $checkIn || $breakEnd > $checkOut) {
                             $validator->errors()->add("breaks.{$index}", '休憩時間が勤務時間外です');
                             continue;
                         }
+                    }
+
+                    // 休憩開始時間のみ入力されている場合（終了時間なし）
+                    if (!empty($break['start_time']) && empty($break['end_time'])) {
+                        $breakStart = strtotime($break['start_time']);
+                        // 休憩開始時間が勤務時間外の場合
+                        if ($breakStart < $checkIn || $breakStart > $checkOut) {
+                            $validator->errors()->add("breaks.{$index}.start_time", '休憩開始時間が勤務時間外です');
+                        }
+                    }
+
+                    // 休憩終了時間のみ入力されている場合（開始時間なし）
+                    if (empty($break['start_time']) && !empty($break['end_time'])) {
+                        $validator->errors()->add("breaks.{$index}.start_time", '休憩開始時間もしくは休憩終了時間が不適切な値です');
                     }
                 }
             }
@@ -64,9 +85,10 @@ class AttendanceModificationRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        // 空の休憩時間を除外
+        // 空の休憩時間を除外（ただし、片方だけ入力されている場合は残す）
         if ($this->has('breaks')) {
             $breaks = collect($this->breaks)->filter(function ($break) {
+                // 開始時間または終了時間のどちらかでも入力されていれば残す
                 return !empty($break['start_time']) || !empty($break['end_time']);
             })->values()->toArray();
 
