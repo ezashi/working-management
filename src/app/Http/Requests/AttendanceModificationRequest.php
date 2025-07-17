@@ -70,7 +70,7 @@ class AttendanceModificationRequest extends FormRequest
                         $breakStart = strtotime($break['start_time']);
                         // 休憩開始時間が勤務時間外の場合
                         if ($breakStart < $checkIn || $breakStart > $checkOut) {
-                            $validator->errors()->add("breaks.{$index}.start_time", '休憩開始時間が勤務時間外です');
+                            $validator->errors()->add("breaks.{$index}", '休憩開始時間が勤務時間外です');
                         }
                     }
 

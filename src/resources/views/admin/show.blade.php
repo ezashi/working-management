@@ -39,7 +39,13 @@
               ~
               <input type="time" name="breaks[{{ $index }}][end_time]" value="{{ old('breaks.'.$index.'.end_time', $break->end_time ? substr($break->end_time, 0, 5) : '') }}">
             </p>
-            @error('breaks')
+            @error('breaks.'.$index)
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+            @error('breaks.'.$index.'.start_time')
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+            @error('breaks.'.$index.'.end_time')
               <div class="error-message">{{ $message }}</div>
             @enderror
           @endforeach
@@ -56,7 +62,13 @@
               ~
               <input type="time" name="breaks[{{ $newIndex }}][end_time]" value="{{ old('breaks.'.$newIndex.'.end_time', '') }}">
             </p>
-            @error('breaks')
+            @error('breaks.'.$index)
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+            @error('breaks.'.$index.'.start_time')
+              <div class="error-message">{{ $message }}</div>
+            @enderror
+            @error('breaks.'.$index.'.end_time')
               <div class="error-message">{{ $message }}</div>
             @enderror
           </div>
