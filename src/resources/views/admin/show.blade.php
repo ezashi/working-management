@@ -62,13 +62,13 @@
               ~
               <input type="time" name="breaks[{{ $newIndex }}][end_time]" value="{{ old('breaks.'.$newIndex.'.end_time', '') }}">
             </p>
-            @error('breaks.'.$index)
+            @error('breaks.'.$newIndex)
               <div class="error-message">{{ $message }}</div>
             @enderror
-            @error('breaks.'.$index.'.start_time')
+            @error('breaks.'.$newIndex.'.start_time')
               <div class="error-message">{{ $message }}</div>
             @enderror
-            @error('breaks.'.$index.'.end_time')
+            @error('breaks.'.$newIndex.'.end_time')
               <div class="error-message">{{ $message }}</div>
             @enderror
           </div>
